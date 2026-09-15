@@ -1,0 +1,16 @@
+name: Validate numerical core
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  numerical-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-lock.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python examples/quickstart.py
+      - run: python code/run_adaptive_closed_tail_pipeline.py --edge-file examples/pa_n100_k4_seed42.edgelist --network-id pa-demo --output-dir outputs/approximation --initial-samples 1000 --maximum-samples 1000 --no-node-output
+      - run: python tests/check_approximation_output.py outputs/approximation
