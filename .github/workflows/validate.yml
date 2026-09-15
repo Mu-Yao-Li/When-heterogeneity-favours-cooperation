@@ -1,4 +1,4 @@
-name: Validate numerical core
+name: Validate algorithms and figure reproduction
 on: [push, pull_request, workflow_dispatch]
 jobs:
   numerical-checks:
@@ -12,5 +12,11 @@ jobs:
       - run: python -m pip install -r requirements-lock.txt
       - run: python -m unittest discover -s tests -v
       - run: python examples/quickstart.py
-      - run: python code/run_adaptive_closed_tail_pipeline.py --edge-file examples/pa_n100_k4_seed42.edgelist --network-id pa-demo --output-dir outputs/approximation --initial-samples 1000 --maximum-samples 1000 --no-node-output
-      - run: python tests/check_approximation_output.py outputs/approximation
+      - run: python algorithms/generate_network.py --model PA --nodes 100 --degree 4 --gamma 1 --seed 42 --output outputs/pa.edgelist
+      - run: python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --output outputs/exact.csv
+      - run: python algorithms/approximate.py --edge-file examples/pa_n100_k4_seed42.edgelist --network-id pa-demo --output outputs/approximate.csv
+      - run: python algorithms/simulate.py --edge-file examples/pa_n100_k4_seed42.edgelist --benefit 5 --cost 1 --steps 1000 --replicates 2 --seed 42 --output outputs/simulation.csv
+      - run: python tests/check_figure_inputs.py
+      - run: python figures/reproduce_fig2.py --output-dir outputs/figures
+      - run: python figures/reproduce_fig3.py --output-dir outputs/figures
+      - run: python figures/reproduce_fig4.py --output-dir outputs/figures
