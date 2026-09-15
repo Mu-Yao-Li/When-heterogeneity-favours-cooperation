@@ -1,33 +1,40 @@
-# Release status
+# Release scope
 
-This initial version provides a validated numerical core; a full paper-reproduction release is still being prepared.
+This package is organized around exact calculations, an approximation, simulations,
+network generation, and independent plotting entry points for Figures 2, 3 and 4.
 
-## Prepared
+## Included
 
-- Seven existing scientific source modules, copied unchanged with SHA-256 hashes.
-- Portable exact-analysis entry point and fixed small-network example.
-- Small mathematical checks and end-to-end validation commands.
-- Dependency specification, citation metadata draft, Git ignore rules and CI configuration.
-- Main/Extended Data figure source mapping with explicit confidence limits.
+- Exact rare-mutation weak-selection thresholds for DB, PC and IM, with average
+  and accumulated payoffs. DB/average is the default.
+- The DB/average spectral-cutoff approximation, with fixed R=1000 by default.
+- A readable Python simulation and an extracted Julia production backend,
+  using the same six rule/payoff definitions.
+- Seeded network generators, including the manuscript PA convention and the
+  historical synthetic network-family implementations.
+- Frozen plotting inputs and one script per requested main figure.
+- A fixed demonstration network, dependency lock, numerical tests and CI.
 
-See `VALIDATION.md` for commands actually run and results. A CI configuration is
-not evidence of a successful hosted CI run.
+Figure 2 panels a/c were recompiled during repository preparation using 20
+randomly sampled valid networks for each of 21 sizes, as instructed by the
+authors. The seed and selection records are included. This is a **revised Figure 2**
+and should replace the earlier figure in the manuscript. Its simulation and
+critical-size panels use their separately documented archived data.
 
-## Required before a complete paper-code release
+See [VALIDATION.md](VALIDATION.md) for checks actually performed and
+[FIGURE_DATA_PROVENANCE.md](FIGURE_DATA_PROVENANCE.md) for panel-level sources.
+The short validation commands do not rerun the manuscript's long production
+simulations or large parameter ensembles.
 
-1. Match Supplementary Information, including simulations and robustness rules,
-   to the corresponding scripts and configurations. The supplied PDF refers to
-   Supplementary Figures S1-S22 and beyond but does not contain those pages.
-2. Freeze final plotting programs and exact input tables for all 4 main and
-   10 Extended Data figures. Current local source candidates are listed in
-   `FIGURE_MAP.md`; older handoffs disagree with the submitted layout.
-3. Include audited empirical preprocessing and network-level statistics promised
-   in the paper's code/data statement.
-4. Confirm code authorship, third-party attribution and the intended licence.
-5. Repository selected: `johnston0603-stack/When-heterogeneity-favours-cooperation`
-   (public). The URL is in `CITATION.cff`. Add it to the manuscript after verifying
-   the published contents and completing the promised code/data coverage.
-6. Tag the exact submission version and, if desired, archive that version with a
-   persistent identifier. Do not invent a DOI or claim a release exists.
+## Outside the current requested package
 
-The user's original project has not been modified by this preparation.
+- Figure 1, the ten Extended Data figures, and Supplementary Information
+  reproduction pipelines.
+- The full empirical network acquisition/preprocessing archive and associated
+  network-level manifest (see [DATA_SOURCES.md](DATA_SOURCES.md)).
+- A tagged submission release or persistent archive DOI; neither has been
+  created or assigned in this package.
+- A software licence selected by the authors. The code attribution notes
+  record the sources inspected without inventing a licence grant.
+
+The original research project is preserved. The manuscript PDF is not included.

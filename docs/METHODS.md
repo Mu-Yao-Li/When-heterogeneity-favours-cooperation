@@ -20,13 +20,49 @@ The factor of two in `eta` is deliberate: the existing solver uses a right-hand
 side of 0.5, while manuscript Eq. 5 uses 1. The independent test constructs the
 Eq. 5 linear system directly to verify this convention.
 
+The new `algorithms/exact.py` entry point solves directly for `tau_ij` with
+right-hand side 1. It reports `N_eff`, `epsilon` and `Delta` under those names.
+`algorithms/approximate.py` reuses the production short-walk/closure functions
+and exposes the same three network-level quantities as estimates.
+
+## Updating rules and payoff aggregation
+
+All three rules choose a focal updater uniformly. DB samples one of its neighbours
+in proportion to fitness; IM samples from the neighbours plus the focal individual.
+PC chooses one uniform neighbour and copies with probability `F_j/(F_i+F_j)`.
+Average and accumulated payoffs are respectively `b*P*x-c*x` and `b*A*x-c*k*x`.
+Simulation fitness is `exp(delta*f)`; its derivative at zero selection is the
+same as the linear fitness expansion used by the exact method.
+
+The exact selection condition is
+`b*benefit_coefficient + c*cost_coefficient > 0`, the first-order criterion for
+`rho_C > rho_D` with uniformly located single mutants. It directly evaluates the
+rare-mutation limit, without substituting a small positive mutation rate. DB
+and PC share the neutral walk `P`; IM uses `(D+I)^(-1)*(A+I)`. Full definitions,
+adaptation history and mathematical attribution are in
+`algorithms/exact_support/PROVENANCE.md`.
+
+The approximation currently supports DB/average only. It draws `R=1000`
+trajectories per node by default, with `L=ceil(2/(1-lambda_2))`, and determines
+the common unresolved tail using `sum_i pi_i^2*tau_i=1`. Optional supplementation
+uses the original diagnostic constants and records them in each output row.
+It saves no node-level arrays. Small tail-denominator uncertainty and exact
+identity closure do not establish a confidence bound for the final threshold.
+
+Simulation samples every post-update state, including events with no strategy
+change. Mutation is uniform C/D replacement with probability `mu`, giving a
+strategy-flip probability of `mu/2`. Replicate uncertainty is calculated from
+replicate means; no automatic claim of equilibration or mixing is made.
+
 ## Threshold interpretation
 
 The signed algebraic threshold can be negative when the denominator is negative.
-The wrapper preserves it as `threshold_signed` and reports `threshold=inf` if
-the weak-selection inequality has no positive critical ratio (up to numerical
-tolerance). Such cases must not be labelled cooperation-promoting simply because
-their signed threshold is less than a positive regular benchmark.
+The primary exact entry point preserves it as `bc_star_signed` and reports
+`bc_star=null` in JSON (an empty field in CSV) when an ordinary positive lower
+threshold is undefined. The approximation also leaves an invalid positive
+threshold blank in CSV. The older `code/analyze_network.py` wrapper uses `inf`
+instead. Check `threshold_status` and coefficient signs; a negative formal root
+does not by itself indicate cooperation promotion.
 
 The regular benchmark is `(N-2)/(N/k-2)` and is only used as a positive-threshold
 comparison when `N/k-2 > 0`. The wrapper reports `benchmark_defined` separately.

@@ -1,37 +1,67 @@
-# Numerical-core validation
+# Validation
 
-Validated locally on Windows with Python 3.12.14 on 15 September 2026, using a
-new virtual environment and the versions recorded in `requirements-lock.txt`.
+Validated locally on Windows on 15 September 2026, using Python 3.12.14 and
+the packages pinned in `requirements-lock.txt`.
 
-## Checks actually run
+## Numerical algorithms and interfaces
 
 | Check | Result |
 | --- | --- |
-| `python -m unittest discover -s tests -v` | 6 tests passed |
-| `python examples/quickstart.py` | Both fixed networks completed |
-| Exact edge-list CLI in README | Completed, matching quick-start PA result |
-| Approximation command in README, R=1000 | status=ok, L=10, no supplemental nodes |
-| README PA grid, 3 gamma values x 2 seeds | 6 successful rows |
-| README ER-like grid, 2 seeds | 2 successful rows |
-| Clean clone of the local Git commit | All 7 source hashes matched; all 6 tests and quick start passed |
+| `python -m unittest discover -s tests -v` | 18 test methods passed |
+| Exact rule/payoff reference | 30 small-graph combinations match independently assembled full-state absorbing Markov-chain derivatives |
+| Regular-network and DB identities | Analytic thresholds, meeting-time normalization, remeeting identity and decomposition passed |
+| Network generators | All 12 exposed models generated connected N=100, k=4 graphs with 200 edges |
+| Python simulation | Six rule/payoff kernels match independent one-step transition probabilities; incremental counts and holds checked |
+| README generation, exact, approximation and Python simulation commands | Completed successfully |
+| Julia 1.13.0 backend self-test | Both groups passed: 180,030 and 6,027 assertions |
+| Python-to-Julia command | N=100, DB/average, 1,000 updates x 2 replicates; CSV, summary and partial trace block checked |
 
-The tests independently assemble the pairwise-coalescence linear system, compare
-regular-network results with analytic thresholds, check the remeeting identity and
-the threshold decomposition, reject disconnected inputs, and ensure negative
-signed thresholds are not misclassified as cooperation advantages.
+The exact tests cover DB, PC and IM independently with both payoff aggregations,
+including finite positive thresholds, negative formal roots and invalid graph
+inputs. The update-kernel tests compare probabilities, not convergence of a
+short simulated trajectory to its stationary distribution.
 
-## Example output
+## Fixed demonstration network
 
-| Network | N_eff | epsilon | Exact (b/c)* |
-| --- | ---: | ---: | ---: |
-| Fixed PA, N=100, k=4 | 49.80984996 | 0.00237606 | 4.52281635 |
-| Degree-4 ring, N=100 | 100.00000000 | 0.00000000 | 4.26086957 |
+| Calculation | Result |
+| --- | ---: |
+| Exact DB, average payoff: N_eff | 49.80984996 |
+| Exact DB, average payoff: epsilon | 0.00237606 |
+| Exact DB, average payoff: (b/c)* | 4.52281635 |
+| Approximation, R=1000, seed=20260823, network ID pa-demo | 4.5271265 |
+| Approximation relative difference from exact | about 0.0953% |
+| Exact PC, accumulated payoff: (b/c)* | 14.66422978 |
+| Exact IM, average payoff: (b/c)* | 7.98832660 |
 
-The approximation on the same PA example gave `(b/c)* = 4.5271265`, a relative
-difference of about 0.0953%. This is one small packaging example, not a general
-accuracy bound or a replacement for the manuscript's approximation benchmarks.
+The approximation example had cutoff L=10. The observed error is one packaging
+example, not a general accuracy bound.
 
-Additional network-family generation, public-goods production grids, long
-agent-based simulations, empirical preprocessing and final plotting pipelines
-have not been independently validated in this draft. Hosted CI status should be
-read from the repository's Actions page; local checks do not establish a hosted run.
+The earlier batch-grid checks remain applicable to the unchanged shared modules:
+six PA rows (three exponents, two seeds) and two ER-like rows completed with
+successful status and small solver residuals. Original copied-module hashes are
+recorded in `source_manifest.json`.
+
+## Figure reproduction
+
+All three standalone figure commands completed successfully, producing PNG/PDF
+files in the repository output directory. Visual inspection checked the layouts,
+labels and plotted summaries. `python tests/check_figure_inputs.py` verified all
+24 bundled input files against their SHA256 digests and CSV row/column counts.
+
+Each figure has an independent script and bundled inputs. Figure 2's sampling
+pool and selected records allow its 20-network selection to be replayed.
+Panel means and standard deviations are recomputed from those records.
+Figure-specific version selection and visual checks are recorded in
+`FIGURE_DATA_PROVENANCE.md`.
+
+## Limits
+
+The full production ensembles and 10^12-update simulation trajectories were
+not rerun. The full empirical network archive, Figure 1, Extended Data and
+Supplementary Information are not validated by these checks. A short smoke
+test establishes that a program executes, not statistical convergence.
+
+Local validation and hosted GitHub Actions are separate. The workflow runs the
+Python test suite, four primary numerical entry points, and all three figure
+scripts. Read the repository's Actions page for the outcome of a particular
+published commit.
