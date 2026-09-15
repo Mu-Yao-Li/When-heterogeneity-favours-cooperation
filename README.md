@@ -1,26 +1,29 @@
 # When heterogeneity favours cooperation
 
 Research code accompanying the manuscript by Muyao Li, Juyi Li, Benjamin Allen,
-and Qi Su (manuscript dated 15 September 2026).
+and Qi Su (15 September 2026).
 
-**Preparation status:** this initial repository version contains the numerical
-core and small reproducible examples. It is not yet a complete reproduction
-archive for every manuscript figure. See [release status](docs/RELEASE_STATUS.md).
+Repository: [Mu-Yao-Li/When-heterogeneity-favours-cooperation](https://github.com/Mu-Yao-Li/When-heterogeneity-favours-cooperation)
 
-Repository: [When-heterogeneity-favours-cooperation](https://github.com/johnston0603-stack/When-heterogeneity-favours-cooperation)
+The repository provides exact thresholds, a large-network approximation,
+evolutionary simulations, network generators, and a separate reproduction script
+for each of Figures 2, 3 and 4.
 
-## What this code computes
+## Start here
 
-For connected, undirected, unweighted networks, the main analysis considers
-death-birth updating, averaged donation-game payoffs, and weak selection.
-The code solves pairwise coalescence times and computes effective size
-`N_eff`, reach-reciprocity alignment `epsilon`, the finite-size penalty `Delta`,
-and the critical benefit-to-cost ratio `(b/c)*`.
+| Task | Entry point | Default / scope |
+| --- | --- | --- |
+| Exact threshold | `algorithms/exact.py` | DB, average payoff; also PC, IM and accumulated payoff |
+| Approximate threshold | `algorithms/approximate.py` | DB, average payoff; spectral cutoff and common-tail closure |
+| Evolutionary simulation | `algorithms/simulate.py` | DB, average payoff; also PC, IM and accumulated payoff |
+| Generate a network | `algorithms/generate_network.py` | Seeded synthetic network families and PA exponent sweeps |
+| Reproduce Figure 2 | `figures/reproduce_fig2.py` | Reads the bundled figure source data |
+| Reproduce Figure 3 | `figures/reproduce_fig3.py` | Reads the bundled figure source data |
+| Reproduce Figure 4 | `figures/reproduce_fig4.py` | Reads the bundled figure source data |
 
-The large-network approximation combines short random-walk simulations with
-a common tail fixed by the remeeting identity. The public-goods implementation
-and additional network generators are included as supporting code, with their
-validation status listed separately.
+The exact and approximate thresholds concern **weak selection and the rare-mutation
+limit**. Simulations use explicit, finite selection strength and mutation rate.
+The graph model is connected, undirected and unweighted, without self-loops.
 
 ## Install
 
@@ -33,87 +36,129 @@ python -m venv .venv
 python -m pip install -r requirements-lock.txt
 ```
 
-`requirements-lock.txt` records the versions from the validation environment.
-`requirements.txt` gives the supported dependency ranges for a fresh resolution.
+`requirements-lock.txt` records the validation environment. `requirements.txt`
+allows compatible dependency versions. Julia production simulations have separate
+instructions in `algorithms/simulation_support/production_julia/`.
 
-## Quick start
+## 1. Exact algorithm
+
+```bash
+# Default: DB, average payoff
+python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --output outputs/exact_db_average.csv
+
+# Change the updating rule and payoff aggregation independently
+python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --update-rule PC --payoff average --output outputs/exact_pc_average.csv
+python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --update-rule IM --payoff accumulated --output outputs/exact_im_accumulated.csv
+```
+
+All six combinations of `DB|PC|IM` and `average|accumulated` are supported.
+Average payoff is `f_i = -c*x_i + b*sum_j A_ij*x_j/k_i`; accumulated payoff is
+`f_i = -c*k_i*x_i + b*sum_j A_ij*x_j`.
+
+The result preserves the signed algebraic root and the direction of the selection
+inequality. A negative root or a rule that never favours cooperation at positive
+`b/c` must not be interpreted as a cooperation-promoting threshold. The DB/average
+case additionally reports the manuscript's effective size and structural metrics.
+See [methods](docs/METHODS.md) for definitions and solver conventions.
+
+Exact calculations require quadratic memory in the number of nodes. Start with
+the included 100-node graph before attempting larger networks.
+
+All graph-input entry points share an edge-list reader: whitespace or comma
+separators, optional column headers, and `#`/`%` comments are accepted. Duplicate
+edges are merged and self-loops ignored. Disconnected graphs are rejected;
+largest-component selection must be performed and documented separately.
+
+## 2. Approximation algorithm
+
+```bash
+python algorithms/approximate.py --edge-file examples/pa_n100_k4_seed42.edgelist --network-id pa-demo --output outputs/approximate.csv
+```
+
+The default uses `R=1000` trajectories per node and `L=ceil(2/spectral_gap)`.
+For optional targeted supplementation, add `--max-samples 5000`. The implementation
+records the seed, file checksum, trajectory count, spectral residual and tail
+diagnostics. It writes one network-level CSV row.
+
+This approximation applies to **DB with average payoff**. Its tail diagnostic is
+not a confidence interval for the final threshold. A negative-tail result is
+marked invalid, and identity closure alone does not establish accuracy.
+
+## 3. Evolutionary simulation
+
+```bash
+python algorithms/simulate.py --edge-file examples/pa_n100_k4_seed42.edgelist --benefit 5 --cost 1 --steps 10000 --replicates 2 --seed 42 --output outputs/simulation.csv
+```
+
+Use `--update-rule DB|PC|IM` and `--payoff average|accumulated` to select the model.
+DB chooses an updater uniformly and a neighbour in proportion to fitness.
+IM includes the updater itself among the competing candidates. PC chooses a
+neighbour and copies with probability `F_j/(F_i+F_j)`, where `F_i=exp(delta*f_i)`.
+With mutation probability `mu`, the updater instead adopts a uniformly random
+cooperator/defector strategy. The default has no burn-in.
+
+The Python entry point is a readable reference for small experiments. The
+production Julia implementation is included for long simulations. The manuscript's
+Figure 2 simulation used `delta=0.01`, `mu=0.0001`, `10^12` updates per replicate
+and ten replicates; the short command above demonstrates execution and does not
+rerun those production trajectories. Frozen plot data provide quick figure
+reproduction.
+
+## 4. Network generation
+
+```bash
+python algorithms/generate_network.py --model PA --nodes 100 --degree 4 --gamma 1 --seed 42 --output outputs/pa.edgelist
+python algorithms/generate_network.py --model RR --nodes 100 --degree 4 --seed 42 --output outputs/rr.edgelist
+```
+
+The generator also exposes ER, SW, BA, HK, KE, Shifted, FF, IslandBA, IslandER
+and Core-periphery families. It writes an edge list and parameter metadata,
+including the realised node count and mean degree. See `--help` for family-specific
+parameters. PA uses the manuscript's degree-power attachment convention; the
+separate BA family retains the historical generator used in network comparisons.
+
+## 5. Reproduce Figures 2, 3 and 4
+
+```bash
+python figures/reproduce_fig2.py --output-dir outputs/figures
+python figures/reproduce_fig3.py --output-dir outputs/figures
+python figures/reproduce_fig4.py --output-dir outputs/figures
+```
+
+Each command reads its own bundled source data and writes PNG/PDF files. It does
+not require access to the authors' original project directory. Source data,
+panel mapping and manuscript-version details are documented in
+[FIGURE_MAP.md](docs/FIGURE_MAP.md) and
+[FIGURE_DATA_PROVENANCE.md](docs/FIGURE_DATA_PROVENANCE.md).
+
+Figure 2 panels a/c use the authors' requested random selection of 20 networks
+per size (seed 20260915), with the selected records saved for audit. This revised
+Figure 2 should replace the earlier manuscript figure. The other panels retain
+their separately documented simulation and critical-size data.
+
+## Validation and supporting files
 
 ```bash
 python -m unittest discover -s tests -v
 python examples/quickstart.py
 ```
 
-The example compares a fixed 100-node preferential-attachment graph with a
-100-node, degree-4 ring lattice. It writes network-level results to
-`outputs/quickstart.csv`. It does not reproduce the paper's full sample ensembles.
-The included edge list fixes the example network independently of future changes
-to random-number generators.
+Small exact-state checks cover the updating rules and payoff conventions;
+coalescence tests check independent equations, regular-network benchmarks and
+invariants. [VALIDATION.md](docs/VALIDATION.md) records the checks actually run.
 
-To analyse your own connected graph:
+`code/` contains shared numerical implementations and optional batch-grid tools.
+`algorithms/` provides the primary user-facing entry points. The fixed example
+network is in `examples/`; temporary calculation and plotting outputs go to
+`outputs/`, which is ignored by Git.
 
-```bash
-python code/analyze_network.py --edge-file examples/pa_n100_k4_seed42.edgelist --output outputs/exact.csv
-```
+## Data, citation and licence
 
-The edge-list reader accepts integer/string labels, whitespace or comma separators,
-optional `source target` headers, and `#`/`%` comments. Duplicate edges are merged
-and self-loops ignored. Disconnected graphs are rejected. This command does not
-silently select a largest component; empirical preprocessing must be recorded.
+Figure source data and one small demonstration network are bundled. The full
+empirical network collection, manuscript PDF, Figure 1 and Extended Data
+reproduction pipelines are outside this package's current scope; see
+[DATA_SOURCES.md](docs/DATA_SOURCES.md) and [release status](docs/RELEASE_STATUS.md).
 
-## Large-network approximation
-
-```bash
-python code/run_adaptive_closed_tail_pipeline.py --edge-file examples/pa_n100_k4_seed42.edgelist --network-id pa-demo --output-dir outputs/approximation --initial-samples 1000 --maximum-samples 1000 --no-node-output
-python tests/check_approximation_output.py outputs/approximation
-```
-
-This command uses the manuscript's fixed `R=1000` setting. The implementation
-also supports targeted additional sampling: `--maximum-samples 5000` enables
-the existing diagnostic-driven supplementation. The short simulation length
-is `ceil(2/spectral_gap)`; this is an approximation and can be expensive on
-slowly mixing graphs. Inspect status, uncertainty, and negative-tail diagnostics.
-Identity closure alone is not evidence of approximation accuracy.
-
-## Small parameter grids
-
-```bash
-python code/run_pa_gamma_metric_grid.py --n-values 100 --k-values 4 --gamma-values 0.5,1,1.5 --sample-start 0 --sample-stop 2 --workers 1 --output outputs/pa_grid.csv
-python code/run_er_metric_grid.py --n-values 100 --k-values 4 --sample-start 0 --sample-stop 2 --workers 1 --output outputs/er_grid.csv
-```
-
-The grid programs have large defaults: supply all ranges explicitly. Exact solves
-store a dense pair-state result and require quadratic memory; start small.
-For multi-process runs, limit BLAS threads (`OMP_NUM_THREADS`,
-`OPENBLAS_NUM_THREADS`, `MKL_NUM_THREADS`) to avoid oversubscription.
-Inspect every CSV row's `status`, `error`, and `relative_residual` before analysis.
-
-## Repository contents
-
-| Path | Purpose |
-| --- | --- |
-| `code/analyze_network.py` | Portable entry point for exact analysis |
-| `code/sparse_threshold.py` | Existing matrix-free coalescence solver |
-| `code/single_layer_threshold.py` | Single-layer calculations and graph generators |
-| `code/run_pa_gamma_metric_grid.py` | PA parameter grids and structural metrics |
-| `code/run_er_metric_grid.py` | Connected ER-like parameter grids |
-| `code/run_adaptive_closed_tail_pipeline.py` | Spectral cutoff, Monte Carlo and closed-tail approximation |
-| `code/generative_network_models.py` | Additional synthetic network families |
-| `code/pgg_threshold.py` | Supporting public-goods threshold implementation |
-| `examples/` | Fixed small graph and a runnable example |
-| `tests/` | Independent coalescence reference, analytic and invariant checks |
-| `docs/` | Equation mapping, provenance, figure map and release status |
-
-The copied scientific implementations are unchanged; hashes are recorded in
-[source_manifest.json](docs/source_manifest.json). The new wrapper and tests
-are publication-preparation additions.
-
-## Data, attribution and licence
-
-This draft includes one generated demonstration network. Empirical network files,
-full production results, and the manuscript PDF are not bundled. Original sources
-and the remaining empirical reproduction work are recorded in
-[DATA_SOURCES.md](docs/DATA_SOURCES.md).
-
-`CITATION.cff` currently lists the manuscript authors; code authorship and
-third-party attribution must be reviewed before release. A licence has not yet
-been selected by the authors. Do not interpret this draft as a licence grant.
+Please cite the associated manuscript using `CITATION.cff`. No publication DOI
+has been assigned in this metadata. The authors have not yet selected a software
+licence; repository visibility alone does not grant an open-source licence.
