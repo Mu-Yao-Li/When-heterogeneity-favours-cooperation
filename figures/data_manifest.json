@@ -1,0 +1,476 @@
+{
+  "description": "Bundled source data for the Figure 2 20-network redraw and manuscript Figures 3 and 4.",
+  "files": [
+    {
+      "path": "figures/data/fig2/critical_sizes.csv",
+      "bytes": 3194,
+      "rows": 10,
+      "columns": [
+        "k",
+        "observed_Nc",
+        "observed_is_lower_bound",
+        "lower_bound_N",
+        "observed_lower_N",
+        "observed_upper_N",
+        "observed_lower_delta",
+        "observed_upper_delta",
+        "predicted_Nc",
+        "alpha_k",
+        "epsilon_inf",
+        "R2_original",
+        "RMSE_original",
+        "observed_method",
+        "observed_source",
+        "prediction_source"
+      ],
+      "sha256": "06e03368076e98a20881c62a476890d2d9abfba2fd5e6c5f444ad8b8d1f36e18"
+    },
+    {
+      "path": "figures/data/fig2/mechanism.csv",
+      "bytes": 7601,
+      "rows": 21,
+      "columns": [
+        "N",
+        "sample_count",
+        "threshold_mean",
+        "threshold_std",
+        "threshold_RR",
+        "threshold_delta_mean",
+        "threshold_delta_std",
+        "cov_over_Etau_mean",
+        "cov_over_Etau_std",
+        "epsilon_crit",
+        "epsilon_crit_std",
+        "margin",
+        "margin_std",
+        "S_N_mean",
+        "S_N_std",
+        "threshold_sem",
+        "cov_over_Etau_sem",
+        "epsilon_crit_sem"
+      ],
+      "sha256": "c218ded723738f508bf66f9dc7cfa7ebad346fdb977ff87337e157e7527879ef"
+    },
+    {
+      "path": "figures/data/fig2/sampling_manifest.json",
+      "bytes": 992,
+      "rows": null,
+      "columns": null,
+      "sha256": "dcbf3ed24cf4c2eacf9706e8e4d0b9d77960168c2d85e1761327305a648b07d4"
+    },
+    {
+      "path": "figures/data/fig2/sampling_pool.csv.gz",
+      "bytes": 647154,
+      "rows": 7700,
+      "columns": [
+        "N",
+        "sample",
+        "seed",
+        "avg_degree",
+        "edges",
+        "threshold",
+        "threshold_RR",
+        "delta_threshold",
+        "S_N",
+        "R_N",
+        "epsilon",
+        "epsilon_crit",
+        "margin_M",
+        "relative_residual",
+        "source_row"
+      ],
+      "sha256": "be916883b949be31cdae84d94e2f96052ed0dbc14cbaf9d7953bf6aea602a102"
+    },
+    {
+      "path": "figures/data/fig2/selected_networks.csv",
+      "bytes": 89223,
+      "rows": 420,
+      "columns": [
+        "N",
+        "sample",
+        "seed",
+        "avg_degree",
+        "edges",
+        "threshold",
+        "threshold_RR",
+        "delta_threshold",
+        "S_N",
+        "R_N",
+        "epsilon",
+        "epsilon_crit",
+        "margin_M",
+        "relative_residual",
+        "source_row"
+      ],
+      "sha256": "d1ae6b16d08685807d932abed329d4667d5bde9f5e0e15e5fabf8d5466e8582a"
+    },
+    {
+      "path": "figures/data/fig2/simulation.csv",
+      "bytes": 6368,
+      "rows": 20,
+      "columns": [
+        "network",
+        "N",
+        "offset",
+        "b_index",
+        "b",
+        "theory_bc_star",
+        "n_rep",
+        "mean_x",
+        "sd_x",
+        "min_x",
+        "max_x",
+        "mean_steps",
+        "converged_n",
+        "sem_x",
+        "sim_b50",
+        "sim_minus_theory",
+        "abs_error",
+        "completed_points",
+        "reps_per_point",
+        "delta",
+        "mutation_rate",
+        "source"
+      ],
+      "sha256": "23bb7fde919b6877eb42b2a86e76bcdbd3dcc3d225904a7a4a95fa6168819c76"
+    },
+    {
+      "path": "figures/data/fig2/threshold_ba.csv",
+      "bytes": 7601,
+      "rows": 21,
+      "columns": [
+        "n",
+        "sample_count",
+        "threshold_mean",
+        "threshold_std",
+        "threshold_RR",
+        "threshold_delta_mean",
+        "threshold_delta_std",
+        "cov_over_Etau_mean",
+        "cov_over_Etau_std",
+        "epsilon_crit",
+        "epsilon_crit_std",
+        "margin",
+        "margin_std",
+        "S_N_mean",
+        "S_N_std",
+        "threshold_sem",
+        "cov_over_Etau_sem",
+        "epsilon_crit_sem"
+      ],
+      "sha256": "5f9e5ee41b0a4116588a726b3e16680ddba45863c1e1fa60dfae4431b49d0486"
+    },
+    {
+      "path": "figures/data/fig2/threshold_regular.csv",
+      "bytes": 502,
+      "rows": 21,
+      "columns": [
+        "n",
+        "threshold_mean"
+      ],
+      "sha256": "4586bb9cb96187924c45b1e85b4c281875a5ccfbe6f9f90578fa005f60df1a47"
+    },
+    {
+      "path": "figures/data/fig3/heterogeneity.csv",
+      "bytes": 12229,
+      "rows": 21,
+      "columns": [
+        "gamma",
+        "sample_count",
+        "threshold_mean",
+        "threshold_std",
+        "threshold_sem",
+        "margin_mean",
+        "margin_std",
+        "margin_sem",
+        "epsilon_mean",
+        "epsilon_std",
+        "epsilon_sem",
+        "epsilon_crit_mean",
+        "epsilon_crit_std",
+        "epsilon_crit_sem",
+        "degree_cv_mean",
+        "degree_cv_std",
+        "degree_cv_sem",
+        "degree_var_mean",
+        "degree_var_std",
+        "degree_var_sem",
+        "max_degree_fraction_mean",
+        "max_degree_fraction_std",
+        "max_degree_fraction_sem",
+        "S_N_mean",
+        "S_N_std",
+        "S_N_sem",
+        "relative_residual_max",
+        "threshold_RR",
+        "complete20"
+      ],
+      "sha256": "2dce130bb059321fd4c7e0e753ab9fb703077e5ea80d148a8b7e81690f762cca"
+    },
+    {
+      "path": "figures/data/fig3/mechanism.csv",
+      "bytes": 12038,
+      "rows": 21,
+      "columns": [
+        "gamma",
+        "sample_count",
+        "threshold_mean",
+        "threshold_std",
+        "threshold_sem",
+        "margin_mean",
+        "margin_std",
+        "margin_sem",
+        "epsilon_mean",
+        "epsilon_std",
+        "epsilon_sem",
+        "epsilon_crit_mean",
+        "epsilon_crit_std",
+        "epsilon_crit_sem",
+        "degree_cv_mean",
+        "degree_cv_std",
+        "degree_cv_sem",
+        "degree_var_mean",
+        "degree_var_std",
+        "degree_var_sem",
+        "max_degree_fraction_mean",
+        "max_degree_fraction_std",
+        "max_degree_fraction_sem",
+        "S_N_mean",
+        "S_N_std",
+        "S_N_sem",
+        "relative_residual_max",
+        "threshold_RR",
+        "complete10"
+      ],
+      "sha256": "7acdfba7552d56706f44e3187e169a69696b664df20868ca85d9426a5d89799d"
+    },
+    {
+      "path": "figures/data/fig3/network_gamma0.5_edges.csv",
+      "bytes": 2571,
+      "rows": 400,
+      "columns": [
+        "source",
+        "target"
+      ],
+      "sha256": "90fef37f202a4efed9ee9f203918df57d8c395fb171a400a1c8c5fb710858cc4"
+    },
+    {
+      "path": "figures/data/fig3/network_gamma0.5_nodes.csv",
+      "bytes": 8921,
+      "rows": 200,
+      "columns": [
+        "node",
+        "x",
+        "y"
+      ],
+      "sha256": "076a652bf7ab05683a101191f09cc1354dd4d151749e825ac6e3e0386265a596"
+    },
+    {
+      "path": "figures/data/fig3/network_gamma1.5_edges.csv",
+      "bytes": 2382,
+      "rows": 400,
+      "columns": [
+        "source",
+        "target"
+      ],
+      "sha256": "8643c948bf4de5dd1376c7f61c95fb9c6d2064773c60bd6f5a5f64e8d4b1fc81"
+    },
+    {
+      "path": "figures/data/fig3/network_gamma1.5_nodes.csv",
+      "bytes": 8928,
+      "rows": 200,
+      "columns": [
+        "node",
+        "x",
+        "y"
+      ],
+      "sha256": "14584dd25c96b5852b54da21c4384816768063ffbbe4de02875902729720028c"
+    },
+    {
+      "path": "figures/data/fig3/network_gamma1_edges.csv",
+      "bytes": 2464,
+      "rows": 400,
+      "columns": [
+        "source",
+        "target"
+      ],
+      "sha256": "d9f42d43fcd238d55a20522d6a7ca07fdf6d4310ebb2bfe68178381cafbdc48c"
+    },
+    {
+      "path": "figures/data/fig3/network_gamma1_nodes.csv",
+      "bytes": 8915,
+      "rows": 200,
+      "columns": [
+        "node",
+        "x",
+        "y"
+      ],
+      "sha256": "d4bbeed5b442de4ead51eb8f7f39ec578b2fac6e79c34dcd06e660011e664a92"
+    },
+    {
+      "path": "figures/data/fig3/phase.csv.gz",
+      "bytes": 1748507,
+      "rows": 13715,
+      "columns": [
+        "N",
+        "gamma",
+        "sample_count",
+        "threshold_mean",
+        "threshold_std",
+        "threshold_RR",
+        "rr_advantage_mean",
+        "rr_advantage_std",
+        "margin_mean",
+        "margin_std",
+        "epsilon_mean",
+        "epsilon_std",
+        "epsilon_sem",
+        "delta_mean",
+        "delta_std",
+        "delta_sem",
+        "relative_residual_max",
+        "phase_min_samples",
+        "used_for_phase"
+      ],
+      "sha256": "8e62b6307063f406b6b4d8cb12a28f1eb3eff910bfcf4caaef06076e805d251b"
+    },
+    {
+      "path": "figures/data/fig3/windows.csv",
+      "bytes": 527,
+      "rows": 6,
+      "columns": [
+        "N",
+        "k",
+        "gamma_left",
+        "gamma_right",
+        "boundary_source",
+        "gamma_resolution"
+      ],
+      "sha256": "bcb4fefd16b9a6df8d353589f24480e6e8754d2cb1f0448d7c7685c5f42e61c7"
+    },
+    {
+      "path": "figures/data/fig4/best_bridge.csv",
+      "bytes": 678,
+      "rows": 1,
+      "columns": [
+        "rank",
+        "source_chunk",
+        "candidate_id",
+        "shell_pair",
+        "local_u",
+        "local_v",
+        "global_u",
+        "global_v",
+        "exact_threshold",
+        "threshold_RR",
+        "exact_delta_threshold",
+        "margin_M",
+        "S_N",
+        "epsilon_N",
+        "epsilon_crit",
+        "p_u_before",
+        "p_v_before",
+        "p_u_after",
+        "p_v_after",
+        "tau_u_plus_after",
+        "tau_v_plus_after",
+        "degree_u_before",
+        "degree_v_before",
+        "top10_shell_pair_unordered",
+        "top10_shell_pair_ordered",
+        "p_after_product",
+        "drop_vs_rr"
+      ],
+      "sha256": "f141521c32314059bd1dbf25c62a25061c49ab228a23cb85d357c9f13c09df41"
+    },
+    {
+      "path": "figures/data/fig4/bridges.csv.gz",
+      "bytes": 13368543,
+      "rows": 500500,
+      "columns": [
+        "local_u",
+        "local_v",
+        "top10_shell_pair_unordered",
+        "exact_threshold",
+        "threshold_RR",
+        "p_before_product",
+        "normalized_reach_product_before"
+      ],
+      "sha256": "693af7ed96fbe1b5a94fc5ae938f72b50e08fe8320bfec9bf6cce909bab1bcb3"
+    },
+    {
+      "path": "figures/data/fig4/module_edges.csv",
+      "bytes": 14522,
+      "rows": 2000,
+      "columns": [
+        "source",
+        "target"
+      ],
+      "sha256": "3e1a865b80c9694c8e023a9469ccbb41bdfa47ac11edf276864128e72f69c7c6"
+    },
+    {
+      "path": "figures/data/fig4/module_nodes.csv",
+      "bytes": 51307,
+      "rows": 1000,
+      "columns": [
+        "node",
+        "degree",
+        "shell",
+        "x",
+        "y",
+        "is_hub"
+      ],
+      "sha256": "38620d93c5a56947b238246d04bd9faaa608888ef2ccce131debf2a8d4e965c8"
+    },
+    {
+      "path": "figures/data/fig4/reach_changes.csv",
+      "bytes": 741449,
+      "rows": 4000,
+      "columns": [
+        "case",
+        "module",
+        "local_node",
+        "global_node",
+        "is_bridge_endpoint",
+        "distance_to_bridge_endpoint_before",
+        "top10_shell",
+        "degree_before",
+        "degree_after",
+        "tau_before",
+        "tau_after",
+        "delta_tau",
+        "tau_before_minus_S_before",
+        "tau_after_minus_S_after",
+        "delta_tau_centered",
+        "tau_ratio",
+        "shell",
+        "case_label",
+        "case_order"
+      ],
+      "sha256": "d9f7f38e32292d366e7d623e86c573d4d098af4890e38070f84675e17c8e98e5"
+    },
+    {
+      "path": "figures/data/fig4/shell_groups.csv",
+      "bytes": 2943,
+      "rows": 10,
+      "columns": [
+        "top10_shell_pair_unordered",
+        "n",
+        "drop_mean",
+        "drop_max",
+        "margin_mean",
+        "margin_max",
+        "threshold_mean",
+        "threshold_min",
+        "threshold_max",
+        "sg_mean",
+        "sg_median",
+        "sg_change_mean",
+        "sg_change_median",
+        "pprod_before_mean",
+        "normalized_reach_product_before_mean"
+      ],
+      "sha256": "f076c440eacd528ee1117a7694b6630f4a9651a706b5f1e114551abee852f65e"
+    }
+  ]
+}
