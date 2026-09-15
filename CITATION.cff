@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the associated manuscript. Publication identifiers will be added when available."
+type: software
+title: "When heterogeneity favours cooperation: research code"
+authors:
+  - family-names: Li
+    given-names: Muyao
+  - family-names: Li
+    given-names: Juyi
+  - family-names: Allen
+    given-names: Benjamin
+  - family-names: Su
+    given-names: Qi
+abstract: "Research code for cooperation thresholds, effective population size, and reach-reciprocity alignment in heterogeneous networks."
+keywords:
+  - evolutionary game theory
+  - cooperation
+  - heterogeneous networks
+repository-code: "https://github.com/johnston0603-stack/When-heterogeneity-favours-cooperation"
+url: "https://github.com/johnston0603-stack/When-heterogeneity-favours-cooperation"
