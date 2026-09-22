@@ -136,7 +136,7 @@ per size (seed 20260915), with the selected records saved for audit. This revise
 Figure 2 should replace the earlier manuscript figure. The other panels retain
 their separately documented simulation and critical-size data.
 
-## Validation and supporting files
+## 6. Validation and supporting files
 
 ```bash
 python -m unittest discover -s tests -v
@@ -152,13 +152,3 @@ invariants. [VALIDATION.md](docs/VALIDATION.md) records the checks actually run.
 network is in `examples/`; temporary calculation and plotting outputs go to
 `outputs/`, which is ignored by Git.
 
-## Data, citation and licence
-
-Figure source data and one small demonstration network are bundled. The full
-empirical network collection, manuscript PDF, Figure 1 and Extended Data
-reproduction pipelines are outside this package's current scope; see
-[DATA_SOURCES.md](docs/DATA_SOURCES.md) and [release status](docs/RELEASE_STATUS.md).
-
-Please cite the associated manuscript using `CITATION.cff`. No publication DOI
-has been assigned in this metadata. The authors have not yet selected a software
-licence; repository visibility alone does not grant an open-source licence.
