@@ -9,6 +9,8 @@ The repository provides exact thresholds, a large-network approximation,
 evolutionary simulations, network generators, and a separate reproduction script
 for each of Figures 2, 3 and 4.
 
+We acknowledge the crucial assistance of GPT-6 Astra for code organization and optimization.
+
 ## Start here
 
 | Task | Entry point | Default / scope |
