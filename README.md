@@ -27,6 +27,66 @@ The exact and approximate thresholds concern **weak selection and the rare-mutat
 limit**. Simulations use explicit, finite selection strength and mutation rate.
 The graph model is connected, undirected and unweighted, without self-loops.
 
+## System requirements
+
+### Hardware
+
+No specialized hardware is required to run the demonstration examples.
+Large-scale calculations may require additional computational resources and memory.
+The supplied examples run on a standard CPU; a GPU is not required. Exact
+calculations require memory that grows quadratically with the number of nodes,
+and running multiple calculations in parallel increases the total memory demand.
+
+### Operating systems and runtimes
+
+The following environments were verified on 13 November 2026:
+
+| Environment | Operating system | Python version |
+| --- | --- | --- |
+| Local validation | Windows 11 Home, version 25H2 (64-bit; OS build 26200.9974) | CPython 3.12.14 |
+| GitHub Actions validation | Ubuntu 26.04.1 LTS (64-bit; runner image `ubuntu-26.04`, image version `20261101.186.1`) | CPython 3.12.16 |
+
+The local environment uses pip 25.0.1 for installation. The Linux environment
+is recorded in the [successful validation run](https://github.com/Mu-Yao-Li/When-heterogeneity-favours-cooperation/actions/runs/43366982531).
+The workflow selects `ubuntu-latest` and Python `3.12`, so future runs may use
+newer OS images and Python patch versions.
+
+### Software dependencies
+
+The complete pinned Python dependency set, including supporting dependencies,
+is listed below and in [requirements-lock.txt](requirements-lock.txt).
+NumPy, SciPy, pandas, NetworkX and Matplotlib are the directly used scientific
+packages; the remaining packages support their installation and operation.
+
+| Package | Version |
+| --- | --- |
+| NumPy | 2.5.3 |
+| SciPy | 1.18.1 |
+| pandas | 2.3.3 |
+| NetworkX | 3.6.1 |
+| Matplotlib | 3.11.2 |
+| contourpy | 1.4.0 |
+| cycler | 0.12.1 |
+| fonttools | 4.65.0 |
+| kiwisolver | 1.5.1 |
+| packaging | 26.3 |
+| Pillow | 12.3.0 |
+| pyparsing | 3.3.2 |
+| python-dateutil | 2.9.0.post0 |
+| pytz | 2026.3.post1 |
+| six | 1.17.0 |
+| tzdata | 2026.4 |
+
+Python standard-library modules are included with Python and require no separate
+installation. [requirements.txt](requirements.txt) specifies broader compatible
+version ranges; use the pinned file to reproduce the validated environment.
+
+The optional production simulation backend requires **Julia 1.7 or newer** and
+was tested with **Julia 1.13.0 on Windows**. It uses only Julia's bundled standard
+library (`Random` for simulation and `Test` for self-tests), with no third-party
+Julia packages. Julia is not required for the Python examples or figure
+reproduction. See the [Julia backend instructions](algorithms/simulation_support/production_julia/README.md).
+
 ## Install
 
 Use Python 3.12. From the repository root:
