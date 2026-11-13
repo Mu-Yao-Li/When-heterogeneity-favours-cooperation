@@ -133,10 +133,11 @@ panel mapping and manuscript-version details are documented in
 [FIGURE_MAP.md](docs/FIGURE_MAP.md) and
 [FIGURE_DATA_PROVENANCE.md](docs/FIGURE_DATA_PROVENANCE.md).
 
-Figure 2 panels a/c use the authors' requested random selection of 20 networks
-per size (seed 20260915), with the selected records saved for audit. This revised
-Figure 2 should replace the earlier manuscript figure. The other panels retain
-their separately documented simulation and critical-size data.
+Figure 2 panels a/c use all 7,700 archived networks. To improve statistical
+stability, selected population sizes (including smaller N and the transition
+region) use 500 networks; the remaining sizes use 100. Exact counts are documented
+in the data provenance and checked by the script. Panels a/c use the same graphs
+and sample SD; panels b/d retain their separate simulation and critical-size data.
 
 ## 6. Validation and supporting files
 

@@ -6,13 +6,15 @@ This release provides independent entry points for the requested main Figures
 
 | Figure | Entry point | Included evidence |
 | --- | --- | --- |
-| 2 | `figures/reproduce_fig2.py` | Shared 20-network selection for threshold/mechanism panels; simulation summaries; separate critical-size analysis. |
+| 2 | `figures/reproduce_fig2.py` | Full archived ensembles (500 or 100 networks per N) for threshold/mechanism panels; simulation summaries; separate critical-size analysis. |
 | 3 | `figures/reproduce_fig3.py` | Degree heterogeneity, network drawings, size/exponent phase map, mechanism, and six favorable degree-dependent windows. |
 | 4 | `figures/reproduce_fig4.py` | Module drawing, all 500,500 bridge candidates, shell boxplots, reach changes, and two correlation panels. |
 
-**Figure 2 is an author-requested 20-network redraw.** Panels a/c supersede the
-supplied manuscript image. Selection is deterministic and recorded at the
-individual-network level; the larger-ensemble averages were not relabeled as 20.
+**Figure 2 panels a/c use the complete archived network ensembles.** For
+statistical stability, sampling was increased to 500 networks at selected sizes,
+including smaller N and the transition region; the remaining sizes have 100
+networks. Exact per-N counts are listed in [data provenance](FIGURE_DATA_PROVENANCE.md).
+Both panels use the same networks at each N, with means and sample SD.
 Panels b/d keep their independent archived data.
 
 Figure 3 uses the six-row panel-d configuration, including k=8. Figure 4 uses the

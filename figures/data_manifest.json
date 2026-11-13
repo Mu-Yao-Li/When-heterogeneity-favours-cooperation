@@ -1,5 +1,5 @@
 {
-  "description": "Bundled source data for the Figure 2 20-network redraw and manuscript Figures 3 and 4.",
+  "description": "Bundled full-ensemble source data for manuscript Figures 2, 3 and 4.",
   "files": [
     {
       "path": "figures/data/fig2/critical_sizes.csv",
@@ -27,7 +27,7 @@
     },
     {
       "path": "figures/data/fig2/mechanism.csv",
-      "bytes": 7601,
+      "bytes": 7443,
       "rows": 21,
       "columns": [
         "N",
@@ -49,14 +49,14 @@
         "cov_over_Etau_sem",
         "epsilon_crit_sem"
       ],
-      "sha256": "c218ded723738f508bf66f9dc7cfa7ebad346fdb977ff87337e157e7527879ef"
+      "sha256": "00f69235dbf125f4f58b64c9f5db849225fc3b9af27c97b2512fc6a0ab4d6f3b"
     },
     {
       "path": "figures/data/fig2/sampling_manifest.json",
-      "bytes": 992,
+      "bytes": 1481,
       "rows": null,
       "columns": null,
-      "sha256": "dcbf3ed24cf4c2eacf9706e8e4d0b9d77960168c2d85e1761327305a648b07d4"
+      "sha256": "f47d3f8e6db99f9bc2fab0ffd1674717e21e73d02798476f1abb3f1d126def42"
     },
     {
       "path": "figures/data/fig2/sampling_pool.csv.gz",
@@ -80,29 +80,6 @@
         "source_row"
       ],
       "sha256": "be916883b949be31cdae84d94e2f96052ed0dbc14cbaf9d7953bf6aea602a102"
-    },
-    {
-      "path": "figures/data/fig2/selected_networks.csv",
-      "bytes": 89223,
-      "rows": 420,
-      "columns": [
-        "N",
-        "sample",
-        "seed",
-        "avg_degree",
-        "edges",
-        "threshold",
-        "threshold_RR",
-        "delta_threshold",
-        "S_N",
-        "R_N",
-        "epsilon",
-        "epsilon_crit",
-        "margin_M",
-        "relative_residual",
-        "source_row"
-      ],
-      "sha256": "d1ae6b16d08685807d932abed329d4667d5bde9f5e0e15e5fabf8d5466e8582a"
     },
     {
       "path": "figures/data/fig2/simulation.csv",
@@ -136,7 +113,7 @@
     },
     {
       "path": "figures/data/fig2/threshold_ba.csv",
-      "bytes": 7601,
+      "bytes": 7443,
       "rows": 21,
       "columns": [
         "n",
@@ -158,17 +135,17 @@
         "cov_over_Etau_sem",
         "epsilon_crit_sem"
       ],
-      "sha256": "5f9e5ee41b0a4116588a726b3e16680ddba45863c1e1fa60dfae4431b49d0486"
+      "sha256": "cff0ed9322b85d8500fe4acba50263ea88bb72a9865ee005edccfc3d260db526"
     },
     {
       "path": "figures/data/fig2/threshold_regular.csv",
-      "bytes": 502,
+      "bytes": 484,
       "rows": 21,
       "columns": [
         "n",
         "threshold_mean"
       ],
-      "sha256": "4586bb9cb96187924c45b1e85b4c281875a5ccfbe6f9f90578fa005f60df1a47"
+      "sha256": "0baaf5a74990b261c6b1dd292fc359930f599224bbc3ba8bd9abb9e561c18b10"
     },
     {
       "path": "figures/data/fig3/heterogeneity.csv",

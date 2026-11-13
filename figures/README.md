@@ -18,19 +18,21 @@ The commands redraw archived numerical results. They do not rerun the large
 network ensembles, exhaustive bridge search, or long stochastic simulations.
 Keep the accompanying `figures/data/figN/` directory with each script.
 
-## Figure 2: updated 20-network redraw
+## Figure 2: full archived ensembles
 
-The author requested a random selection of 20 existing independent networks at
-each population size. Panels a and c use the same selection, with fixed random
-seed **20260915**. The script replays the selection from `sampling_pool.csv.gz`,
-checks it against all 420 rows of `selected_networks.csv`, and computes means and
-sample SD (`ddof=1`). It also exports a/c summary CSVs.
+Panels a and c use all **7,700 independent networks** in `sampling_pool.csv.gz`.
+For statistical stability, selected sizes, including smaller N and the transition
+region, were supplemented to **500 networks** each; the other sizes use **100**.
+The exact schedule is recorded in `sampling_manifest.json` and
+[the provenance table](../docs/FIGURE_DATA_PROVENANCE.md). It is not a single
+cutoff in N. No random subsampling is applied.
 
-This redraw supersedes panels a/c in the supplied manuscript image, whose
-plotting loader used larger available ensembles although the caption stated 20.
-Panel b retains its ten-replicate simulation summaries; panel d retains the
-separate critical-size analysis. The annotated scaling formula retains the
-existing fitted theory.
+The script checks per-N counts, finite values and unique graph seeds, then
+computes means and sample SD (`ddof=1`) from the same graphs for a/c. It exports
+summary CSVs including `sample_count`; SEM uses SD divided by the square root of
+the actual count. Panel b retains its ten-replicate simulation summaries; panel d
+retains the separate critical-size analysis. The annotated scaling formula
+retains the existing fitted theory.
 
 ## Figure 3
 

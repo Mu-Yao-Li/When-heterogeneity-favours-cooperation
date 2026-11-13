@@ -12,6 +12,7 @@ from matplotlib.ticker import LogLocator as LogLocator
 from matplotlib.ticker import NullFormatter as NullFormatter
 from pathlib import Path
 import argparse
+import json
 import math as math
 import numpy as np
 import pandas as pd
@@ -106,12 +107,12 @@ def k4_observed_nc():
     This is the observed crossing on the sampled population-size grid. Panel d
     retains the separately archived critical-size predictions and validation.
     """
-    _, _, ensemble = load_selected_ensemble()
+    _, _, ensemble = load_ensemble()
     favorable = ensemble["margin"].to_numpy(float) > 0
     persistent = np.logical_and.accumulate(favorable[::-1])[::-1]
     candidates = ensemble.loc[persistent, "N"]
     if candidates.empty:
-        raise ValueError("The selected ensemble has no persistent favorable size.")
+        raise ValueError("The archived ensemble has no persistent favorable size.")
     return float(candidates.iloc[0])
 
 
@@ -544,29 +545,26 @@ def add_panel_label(fig: plt.Figure, ax: plt.Axes, label: str, x: float) -> None
     )
 
 
-def load_selected_ensemble():
-    """Replay the fixed sample selection and aggregate the same graphs for a/c.
+def aggregate_ensemble(pool: pd.DataFrame, expected_counts: dict[int, int]):
+    """Aggregate every archived network, with sample SD and count-aware SEM.
 
-    The pool contains existing valid exact calculations, not new simulations.
-    Standard deviations use ddof=1 across 20 independent graph seeds per N.
+    Panels a/c share the full ensemble: 500 networks at supplemented sizes and
+    100 at the remaining sizes. Exact per-size counts are frozen in the manifest.
     """
-    pool = pd.read_csv(DATA_DIR / "sampling_pool.csv.gz", float_precision="round_trip")
-    selected = pd.read_csv(DATA_DIR / "selected_networks.csv", float_precision="round_trip")
     pool = pool.sort_values(["N", "seed", "sample"]).reset_index(drop=True)
+    numeric = pool.to_numpy(dtype=float)
+    if not np.isfinite(numeric).all():
+        raise ValueError("The archived ensemble contains non-finite values.")
+    identifiers = pool[["N", "seed", "sample"]].to_numpy()
+    if not np.equal(identifiers, np.floor(identifiers)).all():
+        raise ValueError("Network sizes, seeds, and sample identifiers must be integers.")
     if pool.duplicated(["N", "seed"]).any():
-        raise ValueError("The sampling pool contains repeated graph identities.")
-    rng = np.random.default_rng(20260915)
-    replay = []
-    for n, group in pool.groupby("N", sort=True):
-        if len(group) < 20:
-            raise ValueError(f"Fewer than 20 valid independent networks at N={n}.")
-        replay.append(
-            group.iloc[rng.choice(len(group), 20, replace=False)].sort_values(["seed", "sample"])
-        )
-    replay = pd.concat(replay, ignore_index=True)
-    pd.testing.assert_frame_equal(selected, replay, check_exact=True)
+        raise ValueError("The archived ensemble contains repeated graph identities.")
+    actual_counts = pool.groupby("N").size().to_dict()
+    if actual_counts != expected_counts:
+        raise ValueError(f"Network counts differ from the sampling manifest: {actual_counts}")
     summary = (
-        selected.groupby("N", as_index=False)
+        pool.groupby("N", as_index=False)
         .agg(
             sample_count=("threshold", "count"),
             threshold_mean=("threshold", "mean"),
@@ -586,13 +584,19 @@ def load_selected_ensemble():
         .sort_values("N")
         .reset_index(drop=True)
     )
-    if not summary["sample_count"].eq(20).all():
-        raise ValueError("Every population size must have exactly 20 networks.")
     for stem in ["threshold", "cov_over_Etau", "epsilon_crit"]:
-        summary[f"{stem}_sem"] = summary[f"{stem}_std"] / np.sqrt(20)
+        summary[f"{stem}_sem"] = summary[f"{stem}_std"] / np.sqrt(summary["sample_count"])
     ba = summary.rename(columns={"N": "n"}).copy()
     rr = pd.DataFrame({"n": ba["n"], "threshold_mean": 4 * (ba["n"] - 2) / (ba["n"] - 8)})
     return (ba, rr, summary)
+
+
+def load_ensemble():
+    """Load the complete archived ensemble; no random subsampling is applied."""
+    manifest = json.loads((DATA_DIR / "sampling_manifest.json").read_text(encoding="utf-8"))
+    expected_counts = {int(n): count for n, count in manifest["network_count_per_N"].items()}
+    pool = pd.read_csv(DATA_DIR / "sampling_pool.csv.gz", float_precision="round_trip")
+    return aggregate_ensemble(pool, expected_counts)
 
 
 def main():
@@ -608,7 +612,7 @@ def main():
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     apply_style()
-    (ba, rr, mechanism) = load_selected_ensemble()
+    (ba, rr, mechanism) = load_ensemble()
     sim = pd.read_csv(DATA_DIR / "simulation.csv")
     nc = pd.read_csv(DATA_DIR / "critical_sizes.csv")
     ba.to_csv(args.output_dir / "fig2_panel_a_summary.csv", index=False)

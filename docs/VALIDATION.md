@@ -46,13 +46,21 @@ recorded in `source_manifest.json`.
 All three standalone figure commands completed successfully, producing PNG/PDF
 files in the repository output directory. Visual inspection checked the layouts,
 labels and plotted summaries. `python tests/check_figure_inputs.py` verified all
-24 bundled input files against their SHA256 digests and CSV row/column counts.
+23 bundled input files against their SHA256 digests and CSV row/column counts.
 
-Each figure has an independent script and bundled inputs. Figure 2's sampling
-pool and selected records allow its 20-network selection to be replayed.
-Panel means and standard deviations are recomputed from those records.
+Each figure has an independent script and bundled inputs. Figure 2 uses all
+7,700 archived networks: 500 networks at 14 population sizes and 100 at seven
+sizes. Per-N counts are checked against the sampling manifest. Panel means and
+sample SD are recomputed from those records; SEM uses the actual count. Regression
+checks cover the shared a/c ensemble, stored summary tables, and rejection of
+duplicate seeds, missing networks and non-finite data.
 Figure-specific version selection and visual checks are recorded in
 `FIGURE_DATA_PROVENANCE.md`.
+
+For the Figure 2 ensemble update on 13 November 2026, all 22 unit tests passed,
+all 23 figure inputs passed checksum/shape checks, and the Figure 2 PNG/PDF were
+regenerated. Visual inspection confirmed intact error bars, labels and inset
+placement. The observed grid crossing remains N=1600.
 
 ## Limits
 
