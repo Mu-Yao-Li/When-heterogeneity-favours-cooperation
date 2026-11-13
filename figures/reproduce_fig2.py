@@ -18,6 +18,10 @@ import numpy as np
 import pandas as pd
 
 DATA_DIR = Path(__file__).resolve().parent / "data" / "fig2"
+MAIN_SIZES = (100, 200, 316, 500, 1000, 1600, 2000, 3162, 5000, 10000)
+INSET_SIZES = (1000, 1200, 1300, 1500, 1600, 1700, 1800, 2000, 3162, 5000, 10000)
+PLOTTED_SIZES = tuple(sorted(set(MAIN_SIZES) | set(INSET_SIZES)))
+NETWORKS_PER_PLOTTED_SIZE = 500
 COLOR_BA = "#3B6FB0"
 COLOR_LIGHT_GUIDE = "#999999"
 COLOR_NC = "#999999"
@@ -131,7 +135,7 @@ def style_axes(ax: plt.Axes) -> None:
 
 
 def draw_panel_a(ax: plt.Axes, ba: pd.DataFrame, rr: pd.DataFrame) -> None:
-    display_n = {100, 200, 316, 500, 1000, 1600, 2000, 3162, 5000, 10000}
+    display_n = MAIN_SIZES
     ba_plot = ba[ba["n"].isin(display_n)].copy()
     rr_plot = rr[rr["n"].isin(display_n)].copy()
     nc = k4_observed_nc()
@@ -205,7 +209,7 @@ def draw_panel_a(ax: plt.Axes, ba: pd.DataFrame, rr: pd.DataFrame) -> None:
         height=0.43,
         bottom=0.34,
     )
-    inset_n = {1000, 1200, 1300, 1500, 1600, 1700, 1800, 2000, 3162, 5000, 10000}
+    inset_n = INSET_SIZES
     ba_in = ba[ba["n"].isin(inset_n)].sort_values("n")
     rr_in = rr[rr["n"].isin(inset_n)].sort_values("n")
     inset.plot(
@@ -346,7 +350,7 @@ def draw_panel_b_delta_comparison(
 
 def draw_panel_c_mechanism(ax: plt.Axes, panel_b: pd.DataFrame) -> None:
     nc = k4_observed_nc()
-    display_n = {100, 200, 316, 500, 1000, 1600, 2000, 3162, 5000, 10000}
+    display_n = MAIN_SIZES
     data = panel_b[panel_b["N"].astype(int).isin(display_n)].sort_values("N").copy()
     eps_handle = ax.errorbar(
         data["N"],
@@ -548,8 +552,8 @@ def add_panel_label(fig: plt.Figure, ax: plt.Axes, label: str, x: float) -> None
 def aggregate_ensemble(pool: pd.DataFrame, expected_counts: dict[int, int]):
     """Aggregate every archived network, with sample SD and count-aware SEM.
 
-    Panels a/c share the full ensemble: 500 networks at supplemented sizes and
-    100 at the remaining sizes. Exact per-size counts are frozen in the manifest.
+    Panels a/c share 500 networks at every plotted size. Additional, unplotted
+    diagnostic sizes retain 100 networks. Exact counts are frozen in the manifest.
     """
     pool = pool.sort_values(["N", "seed", "sample"]).reset_index(drop=True)
     numeric = pool.to_numpy(dtype=float)
@@ -595,8 +599,16 @@ def load_ensemble():
     """Load the complete archived ensemble; no random subsampling is applied."""
     manifest = json.loads((DATA_DIR / "sampling_manifest.json").read_text(encoding="utf-8"))
     expected_counts = {int(n): count for n, count in manifest["network_count_per_N"].items()}
-    pool = pd.read_csv(DATA_DIR / "sampling_pool.csv.gz", float_precision="round_trip")
-    return aggregate_ensemble(pool, expected_counts)
+    pool = pd.concat(
+        [pd.read_csv(DATA_DIR / name, float_precision="round_trip")
+         for name in ("sampling_pool.csv.gz", "supplemental_n10000.csv")],
+        ignore_index=True,
+    )
+    ba, rr, summary = aggregate_ensemble(pool, expected_counts)
+    displayed_counts = summary.set_index("N")["sample_count"].reindex(PLOTTED_SIZES)
+    if not displayed_counts.eq(NETWORKS_PER_PLOTTED_SIZE).all():
+        raise ValueError("Figure 2 panels a/c require 500 networks at every plotted N.")
+    return ba, rr, summary
 
 
 def main():

@@ -1,5 +1,5 @@
 {
-  "description": "Bundled full-ensemble source data for manuscript Figures 2, 3 and 4.",
+  "description": "Figure 2 has 500 networks at every plotted size; bundled source data also include Figures 3 and 4.",
   "files": [
     {
       "path": "figures/data/fig2/critical_sizes.csv",
@@ -27,7 +27,7 @@
     },
     {
       "path": "figures/data/fig2/mechanism.csv",
-      "bytes": 7443,
+      "bytes": 7447,
       "rows": 21,
       "columns": [
         "N",
@@ -49,14 +49,14 @@
         "cov_over_Etau_sem",
         "epsilon_crit_sem"
       ],
-      "sha256": "00f69235dbf125f4f58b64c9f5db849225fc3b9af27c97b2512fc6a0ab4d6f3b"
+      "sha256": "9b6d894aa22a370d33653879609f1b2ff3b08026250abb086c0ffbc890e3afaf"
     },
     {
       "path": "figures/data/fig2/sampling_manifest.json",
-      "bytes": 1481,
+      "bytes": 2307,
       "rows": null,
       "columns": null,
-      "sha256": "f47d3f8e6db99f9bc2fab0ffd1674717e21e73d02798476f1abb3f1d126def42"
+      "sha256": "190bf0f1531498a9bc412544d30696f7c407cea1cd99bb68bc9c0f5277b0b405"
     },
     {
       "path": "figures/data/fig2/sampling_pool.csv.gz",
@@ -112,8 +112,31 @@
       "sha256": "23bb7fde919b6877eb42b2a86e76bcdbd3dcc3d225904a7a4a95fa6168819c76"
     },
     {
+      "path": "figures/data/fig2/supplemental_n10000.csv",
+      "bytes": 80967,
+      "rows": 400,
+      "columns": [
+        "N",
+        "sample",
+        "seed",
+        "avg_degree",
+        "edges",
+        "threshold",
+        "threshold_RR",
+        "delta_threshold",
+        "S_N",
+        "R_N",
+        "epsilon",
+        "epsilon_crit",
+        "margin_M",
+        "relative_residual",
+        "source_row"
+      ],
+      "sha256": "227eb8bfe089eebc70cfcdd9d4d8ccc9861633d4d943bf5eabdd9b5fb72f7484"
+    },
+    {
       "path": "figures/data/fig2/threshold_ba.csv",
-      "bytes": 7443,
+      "bytes": 7447,
       "rows": 21,
       "columns": [
         "n",
@@ -135,7 +158,7 @@
         "cov_over_Etau_sem",
         "epsilon_crit_sem"
       ],
-      "sha256": "cff0ed9322b85d8500fe4acba50263ea88bb72a9865ee005edccfc3d260db526"
+      "sha256": "333c2be361d440869b957a99821222283ba32d95e664d492eff76745fe9620bd"
     },
     {
       "path": "figures/data/fig2/threshold_regular.csv",

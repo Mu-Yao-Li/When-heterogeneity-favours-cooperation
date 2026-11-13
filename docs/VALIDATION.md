@@ -46,11 +46,12 @@ recorded in `source_manifest.json`.
 All three standalone figure commands completed successfully, producing PNG/PDF
 files in the repository output directory. Visual inspection checked the layouts,
 labels and plotted summaries. `python tests/check_figure_inputs.py` verified all
-23 bundled input files against their SHA256 digests and CSV row/column counts.
+24 bundled input files against their SHA256 digests and CSV row/column counts.
 
 Each figure has an independent script and bundled inputs. Figure 2 uses all
-7,700 archived networks: 500 networks at 14 population sizes and 100 at seven
-sizes. Per-N counts are checked against the sampling manifest. Panel means and
+8,100 networks: 500 networks at all 15 plotted population sizes (including the
+inset), and 100 at six additional, unplotted diagnostic sizes. Per-N counts are
+checked against the sampling manifest. Panel means and
 sample SD are recomputed from those records; SEM uses the actual count. Regression
 checks cover the shared a/c ensemble, stored summary tables, and rejection of
 duplicate seeds, missing networks and non-finite data.
@@ -58,14 +59,16 @@ Figure-specific version selection and visual checks are recorded in
 `FIGURE_DATA_PROVENANCE.md`.
 
 For the Figure 2 ensemble update on 13 November 2026, all 22 unit tests passed,
-all 23 figure inputs passed checksum/shape checks, and the Figure 2 PNG/PDF were
+all 24 figure inputs passed checksum/shape checks, and the Figure 2 PNG/PDF were
 regenerated. Visual inspection confirmed intact error bars, labels and inset
 placement. The observed grid crossing remains N=1600.
 
 ## Limits
 
-The full production ensembles and 10^12-update simulation trajectories were
-not rerun. The full empirical network archive, Figure 1, Extended Data and
+The N=10000 extension contributes 400 new exact solves after archived-seed
+validation on each compute host. Other production ensembles and 10^12-update
+simulation trajectories were not rerun. The full empirical network archive,
+Figure 1, Extended Data and
 Supplementary Information are not validated by these checks. A short smoke
 test establishes that a program executes, not statistical convergence.
 

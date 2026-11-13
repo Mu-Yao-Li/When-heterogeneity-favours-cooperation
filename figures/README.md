@@ -20,15 +20,18 @@ Keep the accompanying `figures/data/figN/` directory with each script.
 
 ## Figure 2: full archived ensembles
 
-Panels a and c use all **7,700 independent networks** in `sampling_pool.csv.gz`.
-For statistical stability, selected sizes, including smaller N and the transition
-region, were supplemented to **500 networks** each; the other sizes use **100**.
-The exact schedule is recorded in `sampling_manifest.json` and
-[the provenance table](../docs/FIGURE_DATA_PROVENANCE.md). It is not a single
-cutoff in N. No random subsampling is applied.
+Panels a and c use **500 independent networks at every plotted N**, including
+N=10000 and the panel-a inset, to improve statistical stability. The source data
+combine the unchanged 7,700-row `sampling_pool.csv.gz` with 400 additional
+N=10000 networks in `supplemental_n10000.csv`. The complete 8,100-row archive
+also retains six unplotted diagnostic sizes with 100 networks each. The exact
+schedule is recorded in `sampling_manifest.json` and
+[the provenance table](../docs/FIGURE_DATA_PROVENANCE.md). No random subsampling
+is applied.
 
 The script checks per-N counts, finite values and unique graph seeds, then
-computes means and sample SD (`ddof=1`) from the same graphs for a/c. It exports
+requires 500 networks at every plotted size, then computes means and sample SD
+(`ddof=1`) from the same graphs for a/c. It exports
 summary CSVs including `sample_count`; SEM uses SD divided by the square root of
 the actual count. Panel b retains its ten-replicate simulation summaries; panel d
 retains the separate critical-size analysis. The annotated scaling formula

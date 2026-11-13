@@ -8,22 +8,29 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from figures.reproduce_fig2 import DATA_DIR, aggregate_ensemble, load_ensemble, k4_observed_nc
+from figures.reproduce_fig2 import (
+    DATA_DIR, PLOTTED_SIZES, aggregate_ensemble, load_ensemble, k4_observed_nc,
+)
 
 
 class Figure2EnsembleChecks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.pool = pd.read_csv(DATA_DIR / "sampling_pool.csv.gz", float_precision="round_trip")
+        cls.pool = pd.concat(
+            [pd.read_csv(DATA_DIR / name, float_precision="round_trip")
+             for name in ("sampling_pool.csv.gz", "supplemental_n10000.csv")],
+            ignore_index=True,
+        )
         supplemented = {100, 200, 316, 500, 1000, 1200, 1300, 1500, 1600, 1700,
-                        1800, 2000, 3162, 5000}
-        baseline = {300, 700, 1400, 1900, 3000, 7000, 10000}
+                        1800, 2000, 3162, 5000, 10000}
+        baseline = {300, 700, 1400, 1900, 3000, 7000}
         cls.counts = {n: 500 for n in supplemented} | {n: 100 for n in baseline}
 
     def test_full_ensemble_statistics_and_stored_views(self):
         ba, rr, mechanism = load_ensemble()
         self.assertEqual(mechanism.set_index("N").sample_count.to_dict(), self.counts)
-        self.assertEqual(int(mechanism.sample_count.sum()), 7700)
+        self.assertEqual(int(mechanism.sample_count.sum()), 8100)
+        self.assertTrue(mechanism.set_index("N").loc[list(PLOTTED_SIZES), "sample_count"].eq(500).all())
         pd.testing.assert_frame_equal(ba.rename(columns={"n": "N"}), mechanism)
         for n, group in self.pool.groupby("N"):
             row = mechanism.set_index("N").loc[n]

@@ -1,13 +1,13 @@
 {
-  "status": "Full archived ensemble for Figure 2 panels a and c.",
-  "aggregation": "Use every valid archived network at each N, with the same graphs for panels a and c; no random subsampling.",
-  "sampling_rationale": "For statistical stability, sampling was increased to 500 networks at selected sizes, including smaller N and the transition region. Remaining archived sizes use 100 networks; the exact schedule below is authoritative.",
+  "status": "500 independent networks at every plotted size in Figure 2 panels a/c, including the inset.",
+  "aggregation": "Concatenate the unchanged original pool and the 400 new N=10000 rows; use every valid network without subsampling.",
+  "sampling_rationale": "Use 500 independent networks per plotted N for statistical stability. Six unplotted diagnostic sizes retain 100 archived networks each.",
   "validity": "status=ok, finite values for all retained numeric columns, unique (N, seed).",
-  "source_file": "outputs/fig2_ab_ba_k4_samples100_raw.csv",
-  "source_sha256": "d593199bd31e43c0068ce848759d2e4f84851042c38ab1e7a8d73a35606e14b6",
-  "source_rows": 7700,
-  "valid_rows": 7700,
-  "used_rows": 7700,
+  "source_file": "fig2_full_archive_N10000_s500_raw.csv",
+  "source_sha256": "be074f59fa717667209bc673eb177ee669cb47b62950bdf2e8596ae51ee37539",
+  "source_rows": 8100,
+  "valid_rows": 8100,
+  "used_rows": 8100,
   "network_count_per_N": {
     "100": 500,
     "200": 500,
@@ -29,7 +29,7 @@
     "3162": 500,
     "5000": 500,
     "7000": 100,
-    "10000": 100
+    "10000": 500
   },
   "standard_deviation_ddof": 1,
   "standard_error": "sample standard deviation divided by sqrt(actual network_count_per_N)",
@@ -55,5 +55,28 @@
     5000,
     7000,
     10000
-  ]
+  ],
+  "original_source": {
+    "source_file": "outputs/fig2_ab_ba_k4_samples100_raw.csv",
+    "source_sha256": "d593199bd31e43c0068ce848759d2e4f84851042c38ab1e7a8d73a35606e14b6",
+    "source_rows": 7700
+  },
+  "supplemental_source": {
+    "file": "supplemental_n10000.csv",
+    "rows": 400,
+    "N": 10000,
+    "sample_start": 100,
+    "sample_stop_exclusive": 500,
+    "base_seed": 20260428,
+    "seed_rule": "base_seed + 1009*N + 1000003*sample",
+    "generator": "Original BA with exact mean degree 4",
+    "solver": "bicgstab",
+    "rtol": 1e-06,
+    "atol": 1e-08,
+    "maxiter": 1200,
+    "archived_reference_checks_passed": 4,
+    "largest_relative_residual": 9.99655684293961e-07
+  },
+  "source_row_definition": "Zero-based row in combined source CSV: original 7700 rows followed by 400 new rows ordered by sample number.",
+  "networks_per_plotted_size": 500
 }

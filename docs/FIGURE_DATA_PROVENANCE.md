@@ -15,16 +15,16 @@ archived coordinates and node/edge tables, not embedded screenshots.
 
 ## Figure 2: full archived network ensembles
 
-Panels a/c use **all 7,700 independently seeded networks** at 21 population
-sizes. For statistical stability, sampling was increased to **500 networks** at
-selected sizes, including smaller N and the transition region. The remaining
-archived sizes use **100 networks**. This is a per-size sampling schedule, not a
-uniform cutoff in N:
+Panels a/c use **500 independently seeded networks at every plotted population
+size**, including N=10000 and all points in the panel-a inset, to improve
+statistical stability. The complete archive has **8,100 networks at 21 sizes**:
+15 plotted sizes have 500 networks each, while six additional, unplotted
+diagnostic sizes retain their original 100 networks each.
 
 | Networks per N | Population sizes N |
 | --- | --- |
-| 500 | 100, 200, 316, 500, 1000, 1200, 1300, 1500, 1600, 1700, 1800, 2000, 3162, 5000 |
-| 100 | 300, 700, 1400, 1900, 3000, 7000, 10000 |
+| 500 (plotted) | 100, 200, 316, 500, 1000, 1200, 1300, 1500, 1600, 1700, 1800, 2000, 3162, 5000, 10000 |
+| 100 (unplotted diagnostics) | 300, 700, 1400, 1900, 3000, 7000 |
 
 The sampling rationale concerns stability of ensemble estimates. It does not
 change the solver or establish statistical convergence. The script uses the
@@ -33,13 +33,23 @@ and checks exact per-N counts, finite values and unique `(N, seed)` identities.
 The original source validity filter requires `status=ok` and finite retained
 numeric values.
 
-`sampling_manifest.json` records the source SHA-256 digest, sampling rationale
-and exact counts. `source_row` is the zero-based row index in the original CSV,
-excluding the header. Private server/path fields were excluded.
+The N=10000 extension retains the original samples 0–99 and adds samples
+100–499, using the original seed rule `20260428 + 1009*N + 1000003*sample`.
+All 500 seeds are distinct. The original BA generator with exact mean degree 4,
+DB update with average payoffs, and BiCGSTAB solver tolerances (`rtol=1e-6`,
+`atol=1e-8`) are retained. Each compute environment first reproduced an archived
+reference sample; the new rows are checked for successful solves and residuals.
+
+`sampling_manifest.json` records source SHA-256 digests, sampling rationale and
+exact counts. `source_row` is the zero-based row index in the combined source
+CSV, excluding the header. Its first 7,700 rows retain the original row order;
+the 400 new rows follow in sample-number order. Private server/path fields were
+excluded from public tables.
 
 | Input in `figures/data/fig2/` | Panel/use | Statistical meaning |
 | --- | --- | --- |
-| `sampling_pool.csv.gz` | a,c | All 7,700 valid networks. Both panels use the same graphs at each N; arithmetic means and sample SD (`ddof=1`). `S_N` is effective size, `epsilon` is alignment, `epsilon_crit` is penalty. |
+| `sampling_pool.csv.gz` | a,c | Unchanged original 7,700-network archive. Both panels use the same graphs at each N; arithmetic means and sample SD (`ddof=1`). `S_N` is effective size, `epsilon` is alignment, `epsilon_crit` is penalty. |
+| `supplemental_n10000.csv` | a,c | 400 additional independent N=10000 networks, bringing this size to 500. Loaded together with the original pool before aggregation. |
 | `sampling_manifest.json` | Ensemble audit | Exact population-size/sample-count schedule and original source digest. |
 | `threshold_ba.csv`, `threshold_regular.csv`, `mechanism.csv` | Source-data views | 21 rows each. The script recomputes a/c from the complete pool; the regular threshold is analytic. `sample_count` records the actual ensemble size; SEM is SD/sqrt(sample_count). |
 | `simulation.csv` | b | 20 parameter points, each summarizing ten stochastic replicates; `mean_x` and `sd_x` are plotted. Selection intensity 0.01 and mutation probability 0.0001. |
@@ -53,10 +63,9 @@ critical-size analysis. The asymptotic formula in panel c retains its original
 fit parameters.
 
 **Caption wording for panels a/c:** Points show means and error bars show sample
-standard deviations across independently generated networks. To improve
-statistical stability, selected population sizes use 500 network realizations;
-the remaining sizes use 100, as detailed in the source-data sampling schedule.
-The same realizations are used for panels a and c.
+standard deviations across 500 independently generated networks at each plotted
+population size, including the inset. The same realizations are used for panels
+a and c. The regular-network curve in panel a is analytic.
 
 The simulation workbook was converted to CSV, so Excel is not needed. The
 manuscript reports 10^12 updates per replicate for panel b. This packaging pass
@@ -116,8 +125,8 @@ records the byte size, row count, and SHA-256 digest of every public input file.
 
 - All three scripts produced PNG/PDF in the clean Python 3.12 scientific
   environment, without imports or files from the original working project.
-- Figure 2 uses all 7,700 rows, with 500 unique seeds at 14 sizes and 100 at
-  seven sizes. Panels a/c share these rows; source-data means, sample SD and
+- Figure 2 uses all 8,100 rows, with 500 unique seeds at every plotted size and
+  100 at six unplotted diagnostic sizes. Panels a/c share these rows; source-data means, sample SD and
   count-aware SEM agree with independent NumPy calculations.
 - Figure 3's layout, six interval rows, illustrative graphs, and phase boundary
   were visually compared with the manuscript. Exact CSV float parsing fixed an
@@ -129,6 +138,7 @@ records the byte size, row count, and SHA-256 digest of every public input file.
 - Scripts and input tables were checked for private absolute paths and server
   addresses. Font fallback may produce minor text-metric changes on other systems.
 
-The large production calculations were not rerun. This validation establishes
-portable plotting and reproducible aggregation of archived results, not
-independent replication of every original experiment.
+The N=10000 extension adds 400 new exact solves plus archived-seed validation.
+Other production ensembles and the long simulation trajectories were not rerun.
+This validation establishes portable plotting and reproducible aggregation of
+the supplied results, not independent replication of every original experiment.
