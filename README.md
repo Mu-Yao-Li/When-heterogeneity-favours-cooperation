@@ -102,6 +102,14 @@ python -m pip install -r requirements-lock.txt
 allows compatible dependency versions. Julia production simulations have separate
 instructions in `algorithms/simulation_support/production_julia/`.
 
+**Installation time:** approximately **3.1 minutes** in a fresh environment on
+the reference laptop (Intel Core i9-12900H, 16 GB RAM, Windows 11 25H2,
+Python 3.12.14; measured on 13 November 2026). This comprised 12.5 seconds to
+create the virtual environment and 174.7 seconds to download and install the
+locked dependencies from PyPI with `--no-cache-dir`. Python was already
+installed; its download and installation are excluded. Installation time varies
+with the computer and network connection.
+
 ## 1. Exact algorithm
 
 ```bash
@@ -112,6 +120,28 @@ python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --out
 python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --update-rule PC --payoff average --output outputs/exact_pc_average.csv
 python algorithms/exact.py --edge-file examples/pa_n100_k4_seed42.edgelist --update-rule IM --payoff accumulated --output outputs/exact_im_accumulated.csv
 ```
+
+### Demonstration output and runtime
+
+The first command above is the small demonstration: it uses the bundled
+100-node, 200-edge network with DB updating and average payoffs. It writes
+`outputs/exact_db_average.csv`, containing one result row with the threshold,
+network statistics, solver diagnostics and parameters. Expected values are:
+
+| CSV field | Expected value (approximately) |
+| --- | ---: |
+| `threshold` / `bc_star` | 4.52281635 |
+| `N_eff` | 49.80984996 |
+| `epsilon` | 0.00237606 |
+| `threshold_status` | `finite_positive` |
+
+**Expected runtime:** approximately **16 seconds on the first launch** after
+installation, and **2-3 seconds on subsequent launches** on the reference laptop
+described above. Three sequential runs in the fresh environment took 15.9, 2.6
+and 2.4 seconds (median 2.6 seconds). These are end-to-end elapsed times,
+including interpreter startup, imports, calculation and writing the output;
+the CSV's internal solver timings cover only part of that work. Small numerical
+differences may occur across platforms and solver/library versions.
 
 All six combinations of `DB|PC|IM` and `average|accumulated` are supported.
 Average payoff is `f_i = -c*x_i + b*sum_j A_ij*x_j/k_i`; accumulated payoff is
@@ -215,4 +245,12 @@ invariants. [VALIDATION.md](docs/VALIDATION.md) records the checks actually run.
 `algorithms/` provides the primary user-facing entry points. The fixed example
 network is in `examples/`; temporary calculation and plotting outputs go to
 `outputs/`, which is ignored by Git.
+
+## License
+
+The original source code and accompanying software documentation in this
+repository are released under the [MIT License](LICENSE).
+Third-party software and datasets remain subject to their respective original
+licenses. This grant does not relicense the upstream sigma package referenced
+in the [exact-algorithm provenance](algorithms/exact_support/PROVENANCE.md).
 
